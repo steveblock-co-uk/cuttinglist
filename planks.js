@@ -112,8 +112,8 @@ function arrayEqual(x, y) {
   return true;
 };
 
-// Returns the indices of the best planks. Assumes planks is sorted in order of
-// increasing length.
+// Returns the indices of the best planks, in ascending order.
+// Assumes planks is sorted in order of increasing length.
 function getBestPlanks(targetLength, planks) {
   console.assert(targetLength >= 0);
 
@@ -168,12 +168,14 @@ function HashCountedSet() {
   this.data_ = {};
 }
 
+function numericSorter(a, b) {
+  return a - b;
+}
+
 // stock is a list of (length, cost) tuples, planks is a list of lengths
 function getBestStock(stock, planks) {
 
-  planks.sort(function(a, b) {
-    return a - b;
-  });
+  planks.sort(numericSorter);
 
   var chosenStock = {};
 
@@ -197,7 +199,7 @@ function getBestStock(stock, planks) {
     }
     console.log('Got best plank lengths ' + bestPlankIndices.map(function(i) { return planks[i]; }) + ' for stock length ' + bestStock.length + ' with cost per unit length ' + bestCostPerUnitLength);
 
-    bestPlankIndices.sort().forEach(function(i) {
+    bestPlankIndices.reverse().forEach(function(i) {
       planks.splice(i, 1);
     });
 
