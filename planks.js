@@ -1,6 +1,3 @@
-// replace: $2611.38
-// repair + extend: $799.68
-
 // Length = 488
 // Width: 35 boards
 var numBoards = Math.ceil(197 / 5.75);
@@ -10,14 +7,12 @@ var replace = [
 ];
 
 var extend = [
-  { quantity: 1, length: 50 },
-  { quantity: 1, length: 39 },
-  { quantity: 1, length: 29 },
-  { quantity: 1, length: 22 },
-  { quantity: 1, length: 40 },
-  { quantity: 1, length: 62 },
-  { quantity: 1, length: 40 },
-  { quantity: 1, length: 57 },
+  { quantity: 1, length: 38 },  // angle
+  { quantity: 1, length: 49 },  // angle
+  { quantity: 1, length: 39 },  // angle
+  { quantity: 1, length: 61 },  // angle
+  { quantity: 1, length: 39 },  // angle
+  { quantity: 1, length: 56 },  // angle
   { quantity: 1, length: 50 },
   { quantity: 5, length: 79 },
   { quantity: 1, length: 110 },
@@ -28,11 +23,12 @@ var extend = [
 ];
 
 var crossover = [
+  { quantity: 1, length: 122 },
   { quantity: 1, length: 192 }, { quantity: 1, length: 62 },
   { quantity: 1, length: 126 },
-  { quantity: 6, length: 192 }, { quantity: 3, length: 104 },
-  { quantity: 1, length: 192 }, { quantity: 1, length: 111 },
-  { quantity: 2, length: 103 },
+  { quantity: 6, length: 192 }, { quantity: 3, length: 104 },  // TODO: Should be 190, 192, 106
+  { quantity: 1, length: 192 }, { quantity: 1, length: 111 },  // TODO: Check can use full 196
+  { quantity: 2, length: 103 },  // TODO: Should be 120, 86
   { quantity: 1, length: 174 },
 ];
 
@@ -45,14 +41,17 @@ var repair = [
 ];
 
 var edges = [
+  { quantity: 1, length: 52 },
   { quantity: 1, length: 67 },
   { quantity: 1, length: 35 },
-  { quantity: 1, length: 69 },
+  { quantity: 1, length: 70 },
   { quantity: 1, length: 149 },
 ];
 
 var data = [].concat(replace, edges);
 var data = [].concat(extend, repair, crossover, edges);
+var data = [].concat(extend, repair, crossover);
+//var data = [].concat(edges)
 
 var stock = [
   // { length: 96, cost: 12.72 },   //  8
