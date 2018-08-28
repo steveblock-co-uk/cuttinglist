@@ -99,18 +99,6 @@ Stack.prototype.asArray = function(x) {
   return this.x_.slice();
 };
 
-function arrayEqual(x, y) {
-  if (x.length !== y.length) {
-    return false;
-  }
-  for (var i = 0; i < x.length; ++i) {
-    if (x[i] !== y[i]) {
-      return false;
-    }
-  }
-  return true;
-};
-
 // Returns the indices of the best planks, in ascending order.
 // Assumes planks is sorted in order of increasing length.
 function getBestPlanks(targetLength, planks) {
@@ -161,10 +149,6 @@ function getBestPlanks(targetLength, planks) {
   }
 
   console.assert(false);
-}
-
-function HashCountedSet() {
-  this.data_ = {};
 }
 
 function numericSorter(a, b) {
