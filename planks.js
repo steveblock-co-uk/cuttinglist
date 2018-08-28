@@ -26,9 +26,20 @@ var crossover = [
   { quantity: 1, length: 122 },
   { quantity: 1, length: 192 }, { quantity: 1, length: 62 },
   { quantity: 1, length: 126 },
-  { quantity: 6, length: 192 }, { quantity: 3, length: 104 },  // TODO: Should be 190, 192, 106
+  { quantity: 6, length: 192 }, { quantity: 3, length: 104 },
+  { quantity: 1, length: 192 }, { quantity: 1, length: 111 },
+  { quantity: 2, length: 103 },
+  { quantity: 1, length: 174 },
+];
+
+// After cockup
+var crossover = [
+  { quantity: 1, length: 122 },
+  { quantity: 1, length: 192 }, { quantity: 1, length: 62 },
+  { quantity: 1, length: 126 },
+  { quantity: 3, length: 192 }, { quantity: 3, length: 190 }, { quantity: 3, length: 106 },
   { quantity: 1, length: 192 }, { quantity: 1, length: 111 },  // TODO: Check can use full 196
-  { quantity: 2, length: 103 },  // TODO: Should be 120, 86
+  { quantity: 1, length: 120 }, { quantity: 1, length: 86 },
   { quantity: 1, length: 174 },
 ];
 
@@ -54,11 +65,38 @@ var data = [].concat(extend, repair, crossover);
 //var data = [].concat(edges)
 
 var stock = [
-  // { length: 96, cost: 12.72 },   //  8
-  { length: 120, cost: 15.90 },  // 10
-  { length: 144, cost: 19.03 },  // 12
-  // { length: 168, cost: 22.20 },  // 14
-  { length: 192, cost: 25.25 },  // 16
+  // { length: 96, cost: 12.72, quantity: Infinity },   //  8
+  { length: 120, cost: 15.90, quantity: Infinity },  // 10
+  { length: 144, cost: 19.03, quantity: Infinity },  // 12
+  // { length: 168, cost: 22.20, quantity: Infinity },  // 14
+  { length: 192, cost: 25.25, quantity: Infinity },  // 16
+];
+
+// Afer cockup
+var stock = [
+  { length: 120, cost: 15.90, quantity: Infinity },  // 10
+  { length: 144, cost: 19.03, quantity: Infinity },  // 12
+  { length: 192, cost: 25.25, quantity: Infinity },  // 16
+  { cost: 1, quantity: 1, length: 38 },
+  { cost: 1, quantity: 1, length: 50 },
+  { cost: 1, quantity: 1, length: 104 },
+  { cost: 1, quantity: 1, length: 39 },
+  { cost: 1, quantity: 1, length: 49 },
+  { cost: 1, quantity: 1, length: 104 },
+  { cost: 1, quantity: 1, length: 39 },
+  { cost: 1, quantity: 1, length: 50 },
+  { cost: 1, quantity: 1, length: 103 },
+  { cost: 1, quantity: 1, length: 50 },
+  { cost: 1, quantity: 1, length: 61 },
+  { cost: 1, quantity: 1, length: 81 },
+  { cost: 1, quantity: 1, length: 79 },
+  { cost: 1, quantity: 1, length: 192-111 },
+  { cost: 1, quantity: 1, length: 79 },
+  { cost: 1, quantity: 1, length: 192-110 },
+  { cost: 1, quantity: 1, length: 62 },
+  { cost: 1, quantity: 1, length: 192-126 },
+  { cost: 1, quantity: 1, length: 62 },
+  { cost: 1, quantity: 1, length: 192-122 },
 ];
 
 var planks = [];
@@ -155,18 +193,26 @@ function numericSorter(a, b) {
   return a - b;
 }
 
-// stock is a list of (length, cost) tuples, planks is a list of lengths
+// stock is a list of (length, cost, quantity) tuples, planks is a list of lengths
 function getBestStock(stock, planks) {
 
   planks.sort(numericSorter);
 
   var chosenStock = {};
 
+  // TODO: Do not modify stock!
+  for (var i = 0; i < stock.length; ++i) {
+    stock[i].remainingQuantity = stock[i].quantity;
+  }
+
   while (planks.length > 0) {
     var bestPlankIndices = null;
     var bestStock = null;
     var bestCostPerUnitLength = Infinity;
     for (var i = 0; i < stock.length; ++i) {
+      if (stock[i].remainingQuantity <= 0) {
+        continue;
+      }
       var plankIndices = getBestPlanks(stock[i].length, planks);
       var costPerUnitLength = stock[i].cost / plankIndices.map(function(index) {
         return planks[index];
@@ -190,6 +236,7 @@ function getBestStock(stock, planks) {
       chosenStock[bestStock.length] = { stock: bestStock, count: 0};
     }
     chosenStock[bestStock.length].count += 1;
+    bestStock.remainingQuantity -= 1;
   }
   return Object.getOwnPropertyNames(chosenStock).map(function(length) {
     return chosenStock[length];
