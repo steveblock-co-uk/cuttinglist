@@ -1,3 +1,41 @@
+// Running with effective stock after cockup doesn't work because algorithm
+// greedily uses small pieces to utilize long stock, such that small stock is
+// unused.
+
+// Best plan, by hand
+/*
+- 192 (24)
+38,50 (104 scrap)
+39,49 (104 scrap)
+39,50,96 (was 103)
+50,61,81
+79,111
+79,110
+62,126
+187
+62,122
+174
+171
+9 x 192
+4 x 192 (was 192)
+
+- 144 (7)
+50,94
+50,94
+144
+143
+64 (was 62),79
+62,79
+62,79
+
+- 120 (5)
+56,62
+107 (was 104)
+110 (was 103)
+107 (new, use crappy 192 board for this)
+107 (new)
+*/
+
 // Length = 488
 // Width: 35 boards
 var numBoards = Math.ceil(197 / 5.75);
@@ -35,11 +73,11 @@ var crossover = [
 // After cockup
 var crossover = [
   { quantity: 1, length: 122 },
-  { quantity: 1, length: 192 }, { quantity: 1, length: 62 },
+  { quantity: 1, length: 190 }, { quantity: 1, length: 64 },
   { quantity: 1, length: 126 },
-  { quantity: 3, length: 192 }, { quantity: 3, length: 190 }, { quantity: 3, length: 106 },
-  { quantity: 1, length: 192 }, { quantity: 1, length: 111 },  // TODO: Check can use full 196
-  { quantity: 1, length: 120 }, { quantity: 1, length: 86 },
+  { quantity: 3, length: 192 }, { quantity: 3, length: 190 }, { quantity: 3, length: 107 },
+  { quantity: 1, length: 192 }, { quantity: 1, length: 111 },
+  { quantity: 1, length: 96 }, { quantity: 1, length: 110 },
   { quantity: 1, length: 174 },
 ];
 
@@ -70,33 +108,6 @@ var stock = [
   { length: 144, cost: 19.03, quantity: Infinity },  // 12
   // { length: 168, cost: 22.20, quantity: Infinity },  // 14
   { length: 192, cost: 25.25, quantity: Infinity },  // 16
-];
-
-// Afer cockup
-var stock = [
-  { length: 120, cost: 15.90, quantity: Infinity },  // 10
-  { length: 144, cost: 19.03, quantity: Infinity },  // 12
-  { length: 192, cost: 25.25, quantity: Infinity },  // 16
-  { cost: 1, quantity: 1, length: 38 },
-  { cost: 1, quantity: 1, length: 50 },
-  { cost: 1, quantity: 1, length: 104 },
-  { cost: 1, quantity: 1, length: 39 },
-  { cost: 1, quantity: 1, length: 49 },
-  { cost: 1, quantity: 1, length: 104 },
-  { cost: 1, quantity: 1, length: 39 },
-  { cost: 1, quantity: 1, length: 50 },
-  { cost: 1, quantity: 1, length: 103 },
-  { cost: 1, quantity: 1, length: 50 },
-  { cost: 1, quantity: 1, length: 61 },
-  { cost: 1, quantity: 1, length: 81 },
-  { cost: 1, quantity: 1, length: 79 },
-  { cost: 1, quantity: 1, length: 192-111 },
-  { cost: 1, quantity: 1, length: 79 },
-  { cost: 1, quantity: 1, length: 192-110 },
-  { cost: 1, quantity: 1, length: 62 },
-  { cost: 1, quantity: 1, length: 192-126 },
-  { cost: 1, quantity: 1, length: 62 },
-  { cost: 1, quantity: 1, length: 192-122 },
 ];
 
 var planks = [];
